@@ -1,0 +1,5 @@
+p: 0.495
+dof: 4
+x: 4.60156250
+Integral de 0 a x: 0.49499045
+Error absoluto: 0.00000955
