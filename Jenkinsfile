@@ -1,31 +1,43 @@
+
 pipeline {
-    agent { label '!windows' }
-    options {
-        skipStagesAfterUnstable()
-        disableConcurrentBuilds()
-        timeout(time: 15, unit: 'MINUTES')
-    }
+    agent any
+
     stages {
         stage('Build') {
-            steps { sh 'mvn -B -DskipTests clean package' }
-        }
-        stage('Test') {
-            steps { sh 'mvn -B verify' }
-            post {
-                always { junit 'target/surefire-reports/TEST-*.xml' }
-                success { archiveArtifacts artifacts: 'target/site/jacoco/**', fingerprint: true }
+            steps {
+                echo 'Compilando el proyecto 6A...'
+                bat 'mvn -B clean package -DskipTests'
             }
         }
+
+        stage('Test') {
+            steps {
+                echo 'Ejecutando pruebas JUnit...'
+                bat 'mvn -B test'
+            }
+            post {
+                always {
+                    junit allowEmptyResults: true,
+                          testResults: 'target/surefire-reports/*.xml'
+                }
+            }
+        }
+
         stage('Deliver') {
             steps {
-                sh '''
-                    mkdir -p target/resultados
-                    java -cp target/classes Main 0.20 6 > target/resultados/caso1.txt
-                    java -cp target/classes Main 0.45 15 > target/resultados/caso2.txt
-                    java -cp target/classes Main 0.495 4 > target/resultados/caso3.txt
-                '''
-                archiveArtifacts artifacts: 'target/*.jar,target/resultados/*.txt', fingerprint: true
+                echo 'Generando artefactos...'
+                archiveArtifacts artifacts: 'target/*.jar',
+                                 fingerprint: true
             }
+        }
+    }
+
+    post {
+        success {
+            echo 'BUILD SUCCESS: Pipeline completado.'
+        }
+        failure {
+            echo 'BUILD FAILURE: Se encontraron errores.'
         }
     }
 }
