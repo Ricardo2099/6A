@@ -1,5 +1,21 @@
+Caso 1
+p: 0.2
+dof: 6
+x: 0.55340576
+Integral de 0 a x: 0.20000799
+Error absoluto: 0.00000799
+
+Caso 2
+p: 0.45
+dof: 15
+x: 1.75305176
+Integral de 0 a x: 0.45000011
+Error absoluto: 0.00000011
+
+Caso 3
 p: 0.495
 dof: 4
 x: 4.60156250
 Integral de 0 a x: 0.49499045
 Error absoluto: 0.00000955
+

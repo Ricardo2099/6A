@@ -29,8 +29,10 @@ pipeline {
 
         stage('Deliver') {
             steps {
+                echo 'Ejecutando los casos configurados en Main...'
+                bat 'java -cp target/classes Main'
                 echo 'Generando artefactos...'
-                archiveArtifacts artifacts: 'target/*.jar',
+                archiveArtifacts artifacts: 'target/*.jar,resultado.txt',
                                  fingerprint: true
             }
         }
